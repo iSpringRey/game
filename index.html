@@ -18,10 +18,10 @@
         <h4>那就开始一起来猜字吧哈哈</h4>
         <button onclick="handleNum()">点我选个四位数来猜呗（不给你看哈哈哈）</button>
         <div class="main" style="margin-top: 10px;">
-            <label for="num">写下你要猜的四位数字吧</label>
+            <label for="num">写下你要猜的四位数字吧</label><br/>
             <input type="text" id="num"  placeholder="在这里填写你想要的数字"  maxlength="4" />
             <button onclick="sumbmitNum()">写好了</button><br/>
-            <button style="margin-top: 10px;" onclick="showGuestNum()">猜不动了，点我看看答案吧</button>
+            <button style="margin-top: 30px;" onclick="showGuestNum()">猜不动了，点我看看答案吧</button>
         </div>
        
     </div>
@@ -52,12 +52,19 @@
         }
         function sumbmitNum() {
             const generateNum = localStorage.getItem('generateNum');
+            const value = document.getElementById('num').value;
             if(!generateNum){
                 alert('你还没有猜数字哦，先去选个要猜一个数字吧~');
                 return;
             }
-
-            const value = document.getElementById('num').value;
+            if(!value){
+                alert('你还没有写四位数呢，快去写吧~');
+                return;
+            }
+            if(searchRepeatStr(value.toString()) !== -1){
+                alert('你写的四位数不可以有重复的哦，重新写一个数字吧~');
+                return;
+            }
             const valueArr = value.split('');
             const generateNumArr = generateNum.split('');
             console.log(valueArr, generateNumArr);
@@ -99,6 +106,18 @@
             }
             alert(`对方好友写的四位数是它，${generateNum}，意不意外，惊不惊喜？再来一局呗！`)
             localStorage.clear();
+        }
+        function searchRepeatStr(str) {
+            const len = str.length;
+            for(let i = 0; i < len - 1; i++){
+                const curr = str.charAt(i);
+                for(let j = i + 1; j < len -1; j++){
+                    if(curr === str.charAt(j)){
+                        return i;
+                    }
+                }
+            }
+            return -1;
         }
     </script>
 </body>
