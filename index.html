@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <button onclick="handleNum()">先猜一个数字吧</button>
+        <label for="num">写下你要猜的四位数字吧</label>
+        <input type="text" id="num"  placeholder="在这里填写你想要的数字"  maxlength="4" />
+        <button onclick="sumbmitNum()">写好了</button>
+    </div>
+    <script type="text/javascript"> 
+        const guestNum = '';
+        let arr1 = [];
+        function getRandomIntInclusive(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值 
+        }
+        function randomNum(gLen){//生成随机数 
+            let $num = getRandomIntInclusive(1,9); 
+            if(arr1.indexOf($num)==-1){//去重
+                arr1.push($num);
+            }
+            if(arr1.length<gLen){//生成不重复的4位随机数，这里可以配置生成几位
+                randomNum(gLen);
+            }
+        }
+        function handleNum(len) {
+            arr1 = [];
+            randomNum(4);
+            const generateNum = arr1.join('');
+            console.log('handleNum', generateNum);
+            localStorage.setItem('generateNum', generateNum);
+            alert('我猜好了，快去猜数字吧');
+        }
+        function sumbmitNum() {
+            const generateNum = localStorage.getItem('generateNum');
+            if(!generateNum){
+                alert('你还没有猜数字哦，先去猜一个数字吧~');
+                return;
+            }
+
+            const value = document.getElementById('num').value;
+            const valueArr = value.split('');
+            const generateNumArr = generateNum.split('');
+            console.log(valueArr, generateNumArr);
+            if(value === generateNum) {
+                alert('恭喜你猜对了， 再来一把吧~');
+                localStorage.clear();
+                document.getElementById('num').value = '';
+            } else {
+                // 
+                 const obj = guestAB(valueArr,generateNumArr)
+                  alert(`数量：${obj.aNum}A, 数量：${obj.bNum}B`);
+            }
+        }
+        function guestAB(guestArr, localArr) {
+            let aNum = 0;
+            let bNum = 0;
+            for(let i = 0; i< localArr.length; i++) {
+                for(let j = 0; j< guestArr.length; j++) {
+                    if(localArr[i] === guestArr[j]){
+                        if(i === j){
+                            aNum +=1
+                        } else {
+                            bNum +=1
+                        }
+                        console.log(aNum, bNum);
+                    } 
+                }
+            }
+            console.log(aNum, bNum);
+            return{
+                aNum,bNum
+            }
+        }
+    </script>
+</body>
+</html>
