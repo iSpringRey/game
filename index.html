@@ -8,10 +8,17 @@
 </head>
 <body>
     <div class="container">
-        <button onclick="handleNum()">先猜一个数字吧</button>
-        <label for="num">写下你要猜的四位数字吧</label>
-        <input type="text" id="num"  placeholder="在这里填写你想要的数字"  maxlength="4" />
-        <button onclick="sumbmitNum()">写好了</button>
+        <h5>猜字游戏规则：点击机器生成数字，然后自己写下四位数，比较是否一样，如果一样表示答对</h5>
+        <h5>猜字要求： 输入的四位数字必须为1-9（包括1和9，0除外），<span style="color: red">最重要一点：四位数不可以写重复数字哦~</span></h5>
+        <h4>那就开始一起来猜字吧哈哈</h4>
+        <button onclick="handleNum()">点我选个四位数来猜呗（不给你看哈哈哈）</button>
+        <div class="main" style="margin-top: 10px;">
+            <label for="num">写下你要猜的四位数字吧</label>
+            <input type="text" id="num"  placeholder="在这里填写你想要的数字"  maxlength="4" />
+            <button onclick="sumbmitNum()">写好了</button><br/>
+            <button style="margin-top: 10px;" onclick="showGuestNum()">猜不动了，点我看看答案吧</button>
+        </div>
+       
     </div>
     <script type="text/javascript"> 
         const guestNum = '';
@@ -36,12 +43,12 @@
             const generateNum = arr1.join('');
             console.log('handleNum', generateNum);
             localStorage.setItem('generateNum', generateNum);
-            alert('我猜好了，快去猜数字吧');
+            alert('选好要猜的四位字了，快去猜数字吧');
         }
         function sumbmitNum() {
             const generateNum = localStorage.getItem('generateNum');
             if(!generateNum){
-                alert('你还没有猜数字哦，先去猜一个数字吧~');
+                alert('你还没有猜数字哦，先去选个要猜一个数字吧~');
                 return;
             }
 
@@ -78,6 +85,15 @@
             return{
                 aNum,bNum
             }
+        }
+        function showGuestNum() {
+            const generateNum = localStorage.getItem('generateNum');
+            if(!generateNum){
+                alert('抱歉还没有盲选数字哦，先去盲选一个四位数吧~');
+                return;
+            }
+            alert(`对方好友写的四位数是它，${generateNum}，意不意外，惊不惊喜？再来一局呗！`)
+            localStorage.clear();
         }
     </script>
 </body>
